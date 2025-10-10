@@ -1,0 +1,161 @@
+const API_URL = "http://localhost:8080/api"; // ajuste se necessário
+
+// Mostrar telas
+function showScreen(screenId) {
+  document.querySelectorAll(".screen").forEach(screen => screen.classList.remove("active"));
+  document.getElementById(screenId).classList.add("active");
+}
+
+function showLogin() { showScreen("loginScreen"); }
+function showRegister() { showScreen("registerScreen"); }
+
+// Cadastro via API
+async function register() {
+  const nome = document.getElementById("cadNome").value;
+  const email = document.getElementById("cadEmail").value;
+  const senha = document.getElementById("cadSenha").value;
+
+  if (!nome || !email || !senha) {
+    alert("Preencha todos os campos!");
+    return;
+  }
+
+  try {
+    const response = await fetch(`${API_URL}/usuarios/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ nome, email, senha })
+    });
+
+    if (response.ok) {
+      alert("Cadastro realizado com sucesso! Faça login.");
+      showLogin();
+    } else {
+      alert("Erro no cadastro!");
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Erro de conexão com o servidor.");
+  }
+}
+
+// Login via API
+async function login() {
+  const email = document.getElementById("loginEmail").value;
+  const senha = document.getElementById("loginSenha").value;
+
+  if (!email || !senha) {
+    alert("Preencha todos os campos!");
+    return;
+  }
+
+  try {
+    const response = await fetch(`${API_URL}/usuarios/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, senha })
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      if (data && data.id) {
+        sessionStorage.setItem("usuarioLogado", JSON.stringify(data));
+        showScreen("curriculoScreen");
+      } else {
+        alert("Email ou senha incorretos!");
+      }
+    } else {
+      alert("Erro no login!");
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Erro de conexão com o servidor.");
+  }
+}
+
+// Logout
+function logout() {
+  sessionStorage.removeItem("usuarioLogado");
+  showLogin();
+}
+
+// Atualizar pré-visualização
+function updatePreview() {
+  document.getElementById("prevNome").textContent = document.getElementById("nome").value;
+  document.getElementById("prevEmail").textContent = document.getElementById("email").value;
+  document.getElementById("prevTelefone").textContent = document.getElementById("telefone").value;
+  document.getElementById("prevFormacao").textContent = document.getElementById("formacao").value;
+  document.getElementById("prevExperiencia").textContent = document.getElementById("experiencia").value;
+  document.getElementById("prevHabilidades").textContent = document.getElementById("habilidades").value;
+  document.getElementById("prevHabilidadesComp").textContent = document.getElementById("habilidadesComp").value;
+  document.getElementById("prevCursos").textContent = document.getElementById("cursos").value;
+
+  const linkedin = document.getElementById("linkedin").value;
+  const linkElement = document.getElementById("prevLinkedin");
+  if (linkedin) {
+    linkElement.href = linkedin;
+    linkElement.textContent = "Acessar Perfil";
+  } else {
+    linkElement.removeAttribute("href");
+    linkElement.textContent = "";
+  }
+}
+
+// Preview da foto
+function previewFoto(event) {
+  const reader = new FileReader();
+  reader.onload = function(){
+    const output = document.getElementById("previewFoto");
+    output.src = reader.result;
+    output.style.display = "block";
+  };
+  reader.readAsDataURL(event.target.files[0]);
+}
+
+// Gerar PDF
+function gerarPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  let y = 20;
+
+  doc.setFontSize(18);
+  doc.text("Currículo Profissional", 105, y, { align: "center" });
+  y += 20;
+
+  const foto = document.getElementById("previewFoto");
+  if (foto && foto.src && foto.style.display !== "none") {
+    doc.addImage(foto.src, "JPEG", 160, 20, 40, 40);
+  }
+
+  function addSection(title, content) {
+    if (content && content.trim() !== "") {
+      doc.setFontSize(14);
+      doc.setTextColor(0, 0, 150);
+      doc.text(title, 10, y);
+      y += 8;
+
+      doc.setFontSize(12);
+      doc.setTextColor(0,0,0);
+      const splitContent = doc.splitTextToSize(content, 180);
+      doc.text(splitContent, 10, y);
+      y += splitContent.length * 7 + 5;
+
+      doc.setDrawColor(200,200,200);
+      doc.line(10, y, 200, y);
+      y += 10;
+    }
+  }
+
+  addSection("Nome", document.getElementById("nome").value);
+  addSection("Email", document.getElementById("email").value);
+  addSection("Telefone", document.getElementById("telefone").value);
+  addSection("Formação Acadêmica", document.getElementById("formacao").value);
+  addSection("Experiência Profissional", document.getElementById("experiencia").value);
+  addSection("Hard Skills", document.getElementById("habilidades").value);
+  addSection("Soft Skills", document.getElementById("habilidadesComp").value);
+  addSection("Cursos e Certificações", document.getElementById("cursos").value);
+  addSection("LinkedIn", document.getElementById("linkedin").value);
+
+  doc.save("curriculo.pdf");
+}
+

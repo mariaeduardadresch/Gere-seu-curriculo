@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerador de Currículo</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Tela de Login -->
+  <div id="loginScreen" class="screen active">
+    <div class="auth-container">
+      <div class="auth-logo">
+        <img src="logo.png" alt="Logo da Empresa" class="logo-small">
+      </div>
+      <div class="form-container">
+        <h2>Login</h2>
+        <input type="email" id="loginEmail" placeholder="Email">
+        <input type="password" id="loginSenha" placeholder="Senha">
+        <button class="btn" onclick="login()">Entrar</button>
+        <p>Não tem conta? <a href="#" onclick="showRegister()">Cadastre-se</a></p>
+        <p> Termo de de Uso e Política de Privacidade
+        <p> Crie seu currículo Gratuitamente
+      </div>
+    </div>
+  </div>
+
+  <!-- Tela de Cadastro -->
+  <div id="registerScreen" class="screen">
+    <div class="auth-container">
+      <div class="auth-logo">
+        <img src="logo.png" alt="Logo da Empresa" class="logo-small">
+      </div>
+      <div class="form-container">
+        <h2>Cadastro</h2>
+        <input type="text" id="cadNome" placeholder="Nome completo">
+        <input type="email" id="cadEmail" placeholder="Email">
+        <input type="tel" id="cadTelefone" placeholder="Telefone (xx) xxxxx-xxxx">
+        <input type="password" id="cadSenha" placeholder="Senha">
+        <button class="btn" onclick="register()">Cadastrar</button>
+        <p>Já tem conta? <a href="#" onclick="showLogin()">Login</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tela de Criação do Currículo -->
+  <div id="curriculoScreen" class="screen">
+    <div class="curriculo-container">
+
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <h2>Seções</h2>
+        <ul>
+          <li>Dados Pessoais</li>
+          <li>Formação Acadêmica</li>
+          <li>Experiência Profissional</li>
+          <li>Habilidades Técnicas e Comportamentais</li>
+          <li>Cursos</li>
+        </ul>
+      </aside>
+
+      <!-- Pré-visualização -->
+      <div class="preview">
+        <h2>Pré-visualização do Currículo</h2>
+        <div id="previewContent">
+          <img id="previewFoto" src="" alt="Foto" style="display:none; width:120px; height:120px; border-radius:50%; object-fit:cover;" />
+          <p><strong>Nome:</strong> <span id="prevNome"></span></p>
+          <p><strong>Email:</strong> <span id="prevEmail"></span></p>
+          <p><strong>Telefone:</strong> <span id="prevTelefone"></span></p>
+          <p><strong>Formação Acadêmica:</strong> <span id="prevFormacao"></span></p>
+          <p><strong>Experiência Profissional:</strong> <span id="prevExperiencia"></span></p>
+          <p><strong>Hard Skills:</strong> <span id="prevHabilidades"></span></p>
+          <p><strong>Soft Skills:</strong> <span id="prevHabilidadesComp"></span></p>
+          <p><strong>Cursos:</strong> <span id="prevCursos"></span></p>
+          <p><strong>LinkedIn:</strong> <a id="prevLinkedin" href="#" target="_blank"></a></p>
+        </div>
+        <button class="btn red" onclick="gerarPDF()">Gerar PDF</button>
+        <button class="btn" onclick="logout()">Sair</button>
+      </div>
+
+      <!-- Formulário -->
+      <div class="formulario">
+        <h2>Edite suas informações</h2>
+
+        <label>Foto:</label>
+        <input type="file" id="foto" accept="image/*" onchange="previewFoto(event)" />
+
+        <label>Nome:</label>
+        <input type="text" id="nome" oninput="updatePreview()" />
+
+        <label>Email:</label>
+        <input type="email" id="email" oninput="updatePreview()" />
+
+        <label>Telefone:</label>
+        <input type="tel" id="telefone" placeholder="(xx) xxxxx-xxxx" oninput="updatePreview()" />
+
+        <label>Formação Acadêmica:</label>
+        <textarea id="formacao" oninput="updatePreview()"></textarea>
+
+        <label>Experiência Profissional:</label>
+        <textarea id="experiencia" oninput="updatePreview()"></textarea>
+
+        <label>Hard Skills:</label>
+        <textarea id="habilidades" oninput="updatePreview()"></textarea>
+
+        <label>Soft Skills:</label>
+        <textarea id="habilidadesComp" oninput="updatePreview()"></textarea>
+
+        <label>Cursos:</label>
+        <textarea id="cursos" oninput="updatePreview()"></textarea>
+
+        <label>LinkedIn:</label>
+        <input type="url" id="linkedin" placeholder="https://linkedin.com/in/seu-perfil" oninput="updatePreview()" />
+      </div>
+
+    </div>
+  </div>
+
+  <!-- jsPDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

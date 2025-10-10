@@ -1,0 +1,124 @@
+/* Estilo geral */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #1a0160; /* fundo branco*/
+  color: #ffffff;
+}
+
+/* Telas */
+.screen {
+  display: none;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  position: relative; /* necessário para posicionar o logo */
+}
+
+.screen.active {
+  display: flex;
+}
+
+/* Logo pequeno e circular */
+.logo-small {
+  width: 180px;
+  height: 180px;
+  border-radius: 5%;
+  object-fit: cover;
+  margin-bottom: 0px;
+}
+
+.auth-logo {
+  align-self: flex-start; /* logo fica à esquerda */
+  margin-bottom: 0px;    /* espaço entre logo e formulário */
+}
+
+
+/* Containers de login e cadastro sem fundo branco */
+.auth-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+  max-width: 500px;
+}
+
+
+.form-container {
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* Inputs e textarea */
+input, textarea {
+  font-size: 16px;
+  padding: 12px;
+  margin-bottom: 10px;
+  width: 100%;
+  border-radius: 6px;
+  border: none;
+  background: #ffffff; /* fundo dos inputs sobre azul */
+  color: rgb(0, 0, 0);
+}
+
+/* Botões */
+.btn {
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 6px;
+  background: #13bc3b;
+  color: #fff;
+  cursor: pointer;
+  border: none;
+  margin-top: 10px;
+}
+
+.btn.red {
+  background: #13bc3b;
+}
+
+/* Currículo */
+.curriculo-container {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 200px;
+  background: #1a0160;
+  color: white;
+  padding: 20px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  margin-bottom: 10px;
+}
+
+/* Pré-visualização */
+.preview {
+  flex: 1;
+  background:#1a0160;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+/* Formulário de edição */
+.formulario {
+  flex: 1;
+  background: #1a0160;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+label {
+  display: block;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
