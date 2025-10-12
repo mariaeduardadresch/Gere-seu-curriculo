@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8080/api"; // ajuste se necessário
+const API_URL = "http://localhost:8080/api"; // não será usado enquanto o backend estiver desligado
 
 // Mostrar telas
 function showScreen(screenId) {
@@ -9,73 +9,27 @@ function showScreen(screenId) {
 function showLogin() { showScreen("loginScreen"); }
 function showRegister() { showScreen("registerScreen"); }
 
-// Cadastro via API
-async function register() {
+// ======= LOGIN SIMULADO =======
+function login() {
+  const email = document.getElementById("loginEmail").value;
+  const senha = document.getElementById("loginSenha").value;
+  if(email && senha) showScreen("curriculoScreen");
+  else alert("Preencha todos os campos!");
+}
+
+// ======= CADASTRO SIMULADO =======
+function register() {
   const nome = document.getElementById("cadNome").value;
   const email = document.getElementById("cadEmail").value;
   const senha = document.getElementById("cadSenha").value;
-
-  if (!nome || !email || !senha) {
-    alert("Preencha todos os campos!");
-    return;
-  }
-
-  try {
-    const response = await fetch(`${API_URL}/usuarios/register`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nome, email, senha })
-    });
-
-    if (response.ok) {
-      alert("Cadastro realizado com sucesso! Faça login.");
-      showLogin();
-    } else {
-      alert("Erro no cadastro!");
-    }
-  } catch (err) {
-    console.error(err);
-    alert("Erro de conexão com o servidor.");
-  }
-}
-
-// Login via API
-async function login() {
-  const email = document.getElementById("loginEmail").value;
-  const senha = document.getElementById("loginSenha").value;
-
-  if (!email || !senha) {
-    alert("Preencha todos os campos!");
-    return;
-  }
-
-  try {
-    const response = await fetch(`${API_URL}/usuarios/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, senha })
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      if (data && data.id) {
-        sessionStorage.setItem("usuarioLogado", JSON.stringify(data));
-        showScreen("curriculoScreen");
-      } else {
-        alert("Email ou senha incorretos!");
-      }
-    } else {
-      alert("Erro no login!");
-    }
-  } catch (err) {
-    console.error(err);
-    alert("Erro de conexão com o servidor.");
-  }
+  if(nome && email && senha) {
+    alert("Cadastro realizado com sucesso! Faça login.");
+    showLogin();
+  } else alert("Preencha todos os campos!");
 }
 
 // Logout
 function logout() {
-  sessionStorage.removeItem("usuarioLogado");
   showLogin();
 }
 
@@ -158,4 +112,3 @@ function gerarPDF() {
 
   doc.save("curriculo.pdf");
 }
-
