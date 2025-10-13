@@ -66,49 +66,56 @@ function previewFoto(event) {
   reader.readAsDataURL(event.target.files[0]);
 }
 
-// Gerar PDF
+/// Gerar PDF
 function gerarPDF() {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
+
   let y = 20;
 
-  doc.setFontSize(18);
-  doc.text("Currículo Profissional", 105, y, { align: "center" });
-  y += 20;
+  // Título centralizado
+  doc.setFontSize(17);
+  doc.text("Currículo", 105, y, { align: "center" });
+  y += 15;
 
-  const foto = document.getElementById("previewFoto");
-  if (foto && foto.src && foto.style.display !== "none") {
-    doc.addImage(foto.src, "JPEG", 160, 20, 40, 40);
-  }
-
+  // Função auxiliar para seções com linha de separação preta
   function addSection(title, content) {
     if (content && content.trim() !== "") {
-      doc.setFontSize(14);
-      doc.setTextColor(0, 0, 150);
+      doc.setFontSize(17);
+      doc.setTextColor(0, 0, 0);
       doc.text(title, 10, y);
       y += 8;
 
-      doc.setFontSize(12);
-      doc.setTextColor(0,0,0);
+      doc.setFontSize(14);
       const splitContent = doc.splitTextToSize(content, 180);
       doc.text(splitContent, 10, y);
-      y += splitContent.length * 7 + 5;
+      y += splitContent.length * 7 + 3;
 
-      doc.setDrawColor(200,200,200);
+      doc.setDrawColor(0, 0, 0);
       doc.line(10, y, 200, y);
-      y += 10;
+      y += 7;
     }
   }
 
+  // Foto (opcional)
+  const foto = document.getElementById("previewFoto");
+  if (foto && foto.src && foto.style.display !== "none") {
+    doc.addImage(foto.src, "JPEG", 160, 10, 35, 35);
+  }
+
+  // Dados
   addSection("Nome", document.getElementById("nome").value);
   addSection("Email", document.getElementById("email").value);
   addSection("Telefone", document.getElementById("telefone").value);
   addSection("Formação Acadêmica", document.getElementById("formacao").value);
   addSection("Experiência Profissional", document.getElementById("experiencia").value);
-  addSection("Hard Skills", document.getElementById("habilidades").value);
-  addSection("Soft Skills", document.getElementById("habilidadesComp").value);
-  addSection("Cursos e Certificações", document.getElementById("cursos").value);
+  addSection("Hard Skills/Habilidades Técnicas", document.getElementById("habilidades").value);
+  addSection("Soft Skills/Habilidades Comportamentais", document.getElementById("habilidadesComp").value);
+  addSection("Cursos", document.getElementById("cursos").value);
   addSection("LinkedIn", document.getElementById("linkedin").value);
 
   doc.save("curriculo.pdf");
 }
+
+
+ 
