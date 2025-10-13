@@ -68,13 +68,14 @@
           <p><strong>Nome:</strong> <span id="prevNome"></span></p>
           <p><strong>Email:</strong> <span id="prevEmail"></span></p>
           <p><strong>Telefone:</strong> <span id="prevTelefone"></span></p>
+          <p><strong>Objetivo Profissional:</strong> <span id="prevObjetivo"></span></p>
           <p><strong>Formação Acadêmica:</strong> <span id="prevFormacao"></span></p>
           <p><strong>Experiência Profissional:</strong> <span id="prevExperiencia"></span></p>
-          <p><strong>Hard Skills/Habilidades Técnicas:</strong> <span id="prevHabilidades"></span></p>
-          <p><strong>Soft Skills/Habilidades Comportamentais:</strong> <span id="prevHabilidadesComp"></span></p>
+          <p><strong>Hard Skills / Habilidades Técnicas:</strong> <span id="prevHabilidades"></span></p>
+          <p><strong>Soft Skills / Habilidades Comportamentais:</strong> <span id="prevHabilidadesComp"></span></p>
           <p><strong>Cursos:</strong> <span id="prevCursos"></span></p>
           <p><strong>LinkedIn:</strong> <a id="prevLinkedin" href="#" target="_blank"></a></p>
-        </div>
+       </div>
         <button class="btn red" onclick="gerarPDF()">Gerar PDF</button>
         <button class="btn" onclick="logout()">Sair</button>
       </div>
@@ -94,6 +95,9 @@
 
         <label>Telefone:</label>
         <input type="tel" id="telefone" placeholder="(xx) xxxxx-xxxx" oninput="updatePreview()" />
+
+        <label>Objetivo Profissional:</label>
+        <textarea id="objetivo" oninput="updatePreview()"></textarea>
 
         <label>Formação Acadêmica:</label>
         <textarea id="formacao" oninput="updatePreview()"></textarea>
