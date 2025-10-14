@@ -77,128 +77,89 @@ function gerarPDF() {
   const pageWidth = doc.internal.pageSize.getWidth();
   const pageHeight = doc.internal.pageSize.getHeight();
 
-  // === CORES E FONTES ===
-  const bgLeftColor = [240, 240, 240]; // cinza claro lateral
-  const textColor = [0, 0, 0];
+  // Dimensões das colunas
+  const leftWidth = 70; // coluna esquerda (cinza)
+  const rightWidth = pageWidth - leftWidth;
 
-  // === LAYOUT BÁSICO ===
-  const leftColWidth = 70;
-  const rightColX = leftColWidth + 10;
-  let yLeft = 20;
-  let yRight = 25;
+  // Fundo cinza
+  doc.setFillColor(244, 244, 244);
+  doc.rect(0, 0, leftWidth, pageHeight, "F");
 
-  // === FUNÇÃO DE SEÇÃO GENÉRICA ===
-  function addSection(title, content, x, y, maxWidth, titleSize = 14, contentSize = 12) {
-    if (content && content.trim() !== "") {
-      doc.setFontSize(titleSize);
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(...textColor);
-      doc.text(title, x, y);
-      y += 7;
-
-      doc.setFontSize(contentSize);
-      doc.setFont("helvetica", "normal");
-      const split = doc.splitTextToSize(content, maxWidth);
-      doc.text(split, x, y);
-      y += split.length * 6 + 5;
-    }
+  // === Função auxiliar ===
+  function addSection(title, content, x, y, maxWidth, lineHeight = 6) {
+    if (!content || content.trim() === "") return y;
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(13);
+    doc.setTextColor(0, 0, 0);
+    doc.text(title, x, y);
+    y += 6;
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(11);
+    doc.setTextColor(50, 50, 50);
+    const split = doc.splitTextToSize(content, maxWidth);
+    doc.text(split, x, y);
+    y += split.length * lineHeight + 5;
     return y;
   }
 
-  // === FUNDO DA COLUNA ESQUERDA ===
-  doc.setFillColor(...bgLeftColor);
-  doc.rect(0, 0, leftColWidth, pageHeight, "F");
-
-  // === FOTO (opcional) ===
+  // === FOTO ===
   const foto = document.getElementById("previewFoto");
+  let yLeft = 15;
   if (foto && foto.src && foto.style.display !== "none") {
-    doc.addImage(foto.src, "JPEG", 15, yLeft, 40, 40);
-    yLeft += 50;
+    doc.addImage(foto.src, "JPEG", 10, yLeft, 35, 35);
+    yLeft += 35;
   }
 
   // === NOME ===
-  const nome = document.getElementById("nome").value;
-  if (nome && nome.trim() !== "") {
-    doc.setFontSize(18);
-    doc.setFont("helvetica", "bold");
-    doc.setTextColor(0, 0, 0);
-    const splitNome = doc.splitTextToSize(nome, leftColWidth - 10);
-    doc.text(splitNome, 10, yLeft);
-    yLeft += 12;
-  }
-
-  // === CARGO / OBJETIVO RESUMIDO ===
-  const objetivoCurto = document.getElementById("objetivo")?.value || "";
-  if (objetivoCurto.trim() !== "") {
-    doc.setFontSize(12);
-    doc.setFont("helvetica", "italic");
-    doc.text(objetivoCurto, 10, yLeft + 5, { maxWidth: leftColWidth - 15 });
-    yLeft += 20;
-  }
+  const nome = document.getElementById("nome").value || "Seu Nome Completo";
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(18);
+  doc.setTextColor(0, 0, 0);
+  doc.text(nome, leftWidth / 2, yLeft, { align: "center" });
+  yLeft += 10;
 
   // === CONTATO ===
-  const telefone = document.getElementById("telefone").value;
   const email = document.getElementById("email").value;
+  const telefone = document.getElementById("telefone").value;
   const linkedin = document.getElementById("linkedin").value;
-
-  doc.setFontSize(14);
-  doc.setFont("helvetica", "bold");
-  doc.text("Contato", 10, yLeft);
-  yLeft += 8;
-
-  doc.setFontSize(11);
-  doc.setFont("helvetica", "normal");
-  if (email) { doc.text(email, 10, yLeft); yLeft += 6; }
-  if (telefone) { doc.text(telefone, 10, yLeft); yLeft += 6; }
-  if (linkedin) { doc.text(linkedin, 10, yLeft, { maxWidth: leftColWidth - 15 }); yLeft += 8; }
-
-  doc.line(10, yLeft, leftColWidth - 10, yLeft);
-  yLeft += 10;
+  let contatoTxt = "";
+  if (telefone) contatoTxt += telefone + "\n";
+  if (email) contatoTxt += email + "\n";
+  if (linkedin) contatoTxt += linkedin;
+  yLeft = addSection("Contato", contatoTxt, 10, yLeft + 5, leftWidth - 20);
 
   // === OBJETIVO PROFISSIONAL ===
   const objetivo = document.getElementById("objetivo")?.value || "";
-  if (objetivo.trim() !== "") {
-    yLeft = addSection("Objetivo Profissional", objetivo, 10, yLeft, leftColWidth - 15);
-  }
+  yLeft = addSection("Objetivo Profissional", objetivo, 10, yLeft, leftWidth - 20);
 
-  
- // === HARD SKILLS ===
-const hard = document.getElementById("habilidades").value;
-if (hard && hard.trim() !== "") {
-  yLeft = addSection("Hard Skills / Habilidades Técnicas", hard, 10, yLeft, leftColWidth - 15);
-}
-
-// === SOFT SKILLS ===
-const soft = document.getElementById("habilidadesComp").value;
-if (soft && soft.trim() !== "") {
-  yLeft = addSection("Soft Skills / Habilidades Comportamentais", soft, 10, yLeft, leftColWidth - 15);
-}
-
+  // === FORMAÇÃO ACADÊMICA ===
+  const formacao = document.getElementById("formacao").value;
+  yLeft = addSection("Formação Acadêmica", formacao, 10, yLeft, leftWidth - 20);
 
   // === CURSOS ===
   const cursos = document.getElementById("cursos").value;
-  if (cursos.trim() !== "") {
-    yLeft = addSection("Cursos e Certificações", cursos, 10, yLeft, leftColWidth - 15);
-  }
+  yLeft = addSection("Cursos", cursos, 10, yLeft, leftWidth - 20);
 
   // === COLUNA DIREITA ===
+  let yRight = 20;
+  const xRight = leftWidth + 10;
+
+  // === HARD SKILLS ===
+  const hard = document.getElementById("habilidades").value;
+  yRight = addSection("Hard Skills", hard, xRight, yRight, rightWidth - 20);
+
+  // === SOFT SKILLS ===
+  const soft = document.getElementById("habilidadesComp").value;
+  yRight = addSection("Soft Skills", soft, xRight, yRight, rightWidth - 20);
+
+  // === EXPERIÊNCIA PROFISSIONAL ===
   const experiencia = document.getElementById("experiencia").value;
-  const formacao = document.getElementById("formacao").value;
+  yRight = addSection("Experiência Profissional", experiencia, xRight, yRight, rightWidth - 20);
 
-  if (experiencia.trim() !== "") {
-    yRight = addSection("Experiência Profissional", experiencia, rightColX, yRight, pageWidth - rightColX - 10);
-  }
-
-  if (formacao.trim() !== "") {
-    yRight = addSection("Formação Acadêmica", formacao, rightColX, yRight, pageWidth - rightColX - 10);
-  }
-
-  // === LINKEDIN FINAL (caso queira repetir) ===
-  if (linkedin.trim() !== "") {
-    doc.setFontSize(12);
-    doc.setFont("helvetica", "italic");
-    doc.text(`LinkedIn: ${linkedin}`, rightColX, pageHeight - 10, { maxWidth: pageWidth - rightColX - 10 });
-  }
+  // === LINHA FINAL ===
+  doc.setDrawColor(0, 0, 0);
+  doc.setLineWidth(0.3);
+  doc.line(10, pageHeight - 10, pageWidth - 10, pageHeight - 10);
 
   // === SALVAR PDF ===
   doc.save("curriculo_alta_performance.pdf");
