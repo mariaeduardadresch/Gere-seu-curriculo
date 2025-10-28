@@ -8,39 +8,15 @@
 </head>
 <body>
 
-  <!-- Tela de Login -->
-  <div id="loginScreen" class="screen active">
-    <div class="auth-container">
+  <!-- Tela inicial com botão -->
+  <div id="homeScreen" class="screen active">
+    <div class="auth-container" style="text-align: center; align-items: center;">
       <div class="auth-logo">
         <img src="logo.png" alt="Logo da Empresa" class="logo-small">
       </div>
-      <div class="form-container">
-        <h2>Login</h2>
-        <input type="email" id="loginEmail" placeholder="Email">
-        <input type="password" id="loginSenha" placeholder="Senha">
-        <button class="btn" onclick="login()">Entrar</button>
-        <p>Não tem conta? <a href="#" onclick="showRegister()">Cadastre-se</a></p>
-        <p> Termo de de Uso e Política de Privacidade
-        <p> Crie seu currículo Gratuitamente
-      </div>
-    </div>
-  </div>
-
-  <!-- Tela de Cadastro -->
-  <div id="registerScreen" class="screen">
-    <div class="auth-container">
-      <div class="auth-logo">
-        <img src="logo.png" alt="Logo da Empresa" class="logo-small">
-      </div>
-      <div class="form-container">
-        <h2>Cadastro</h2>
-        <input type="text" id="cadNome" placeholder="Nome completo">
-        <input type="email" id="cadEmail" placeholder="Email">
-        <input type="tel" id="cadTelefone" placeholder="Telefone (xx) xxxxx-xxxx">
-        <input type="password" id="cadSenha" placeholder="Senha">
-        <button class="btn" onclick="register()">Cadastrar</button>
-        <p>Já tem conta? <a href="#" onclick="showLogin()">Login</a></p>
-      </div>
+      <h2>Crie seu Currículo Profissional Gratuitamente</h2>
+      <p>Monte um currículo moderno e pronto para impressão.</p>
+      <button class="btn" onclick="showScreen('curriculoScreen')">Crie seu Currículo</button>
     </div>
   </div>
 
@@ -75,9 +51,9 @@
           <p><strong>Soft Skills / Habilidades Comportamentais:</strong> <span id="prevHabilidadesComp"></span></p>
           <p><strong>Cursos:</strong> <span id="prevCursos"></span></p>
           <p><strong>LinkedIn:</strong> <a id="prevLinkedin" href="#" target="_blank"></a></p>
-       </div>
+        </div>
         <button class="btn red" onclick="gerarPDF()">Gerar PDF</button>
-        <button class="btn" onclick="logout()">Sair</button>
+        <button class="btn" onclick="showScreen('homeScreen')">Voltar</button>
       </div>
 
       <!-- Formulário -->

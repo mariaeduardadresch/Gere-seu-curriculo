@@ -1,67 +1,52 @@
-/* Estilo geral */
+/* ===== Estilo geral ===== */
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: #1a0160; /* fundo branco*/
+  background: #1a0160; /* Fundo azul escuro */
   color: #ffffff;
 }
 
-/* Telas */
+/* ===== Telas ===== */
 .screen {
   display: none;
   height: 100vh;
   justify-content: center;
   align-items: center;
-  position: relative; /* necessário para posicionar o logo */
+  position: relative;
 }
 
 .screen.active {
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-/* Logo pequeno e circular */
+/* ===== Logo ===== */
 .logo-small {
   width: 180px;
   height: auto;
   border-radius: 5%;
   object-fit: contain;
-  margin-bottom: 0px;
+  margin-bottom: 20px;
 }
 
 .auth-logo {
-  align-self: flex-start; /* logo fica à esquerda */
-  margin-bottom: 0px;    /* espaço entre logo e formulário */
+  align-self: center;
+  margin-bottom: 20px;
 }
 
-
-/* Containers de login e cadastro sem fundo branco */
-.auth-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 90%;
-  max-width: 500px;
+/* ===== Tela inicial ===== */
+#homeScreen {
+  text-align: center;
 }
 
-
-.form-container {
-  width: 100%;
-  margin-top: 20px;
+#homeScreen h1 {
+  font-size: 28px;
+  margin-bottom: 20px;
 }
 
-/* Inputs e textarea */
-input, textarea {
-  font-size: 16px;
-  padding: 12px;
-  margin-bottom: 10px;
-  width: 100%;
-  border-radius: 6px;
-  border: none;
-  background: #ffffff; /* fundo dos inputs sobre azul */
-  color: rgb(0, 0, 0);
-}
-
-/* Botões */
+/* ===== Botões ===== */
 .btn {
   padding: 12px 20px;
   font-size: 16px;
@@ -71,20 +56,52 @@ input, textarea {
   cursor: pointer;
   border: none;
   margin-top: 10px;
+  transition: background 0.3s;
+}
+
+.btn:hover {
+  background: #0fa933;
 }
 
 .btn.red {
   background: #13bc3b;
 }
 
-/* Currículo */
+/* ===== Inputs e textarea ===== */
+input, textarea {
+  font-size: 16px;
+  padding: 12px;
+  margin-bottom: 10px;
+  width: 100%;
+  border-radius: 6px;
+  border: none;
+  background: #ffffff;
+  color: rgb(0, 0, 0);
+}
+
+label {
+  display: block;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+/* ===== Containers ===== */
+.auth-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+  max-width: 500px;
+}
+
+/* ===== Currículo ===== */
 .curriculo-container {
   display: flex;
   width: 100%;
   height: 100vh;
 }
 
-/* Sidebar */
+/* ===== Sidebar ===== */
 .sidebar {
   width: 200px;
   background: #1a0160;
@@ -101,15 +118,15 @@ input, textarea {
   margin-bottom: 10px;
 }
 
-/* Pré-visualização */
+/* ===== Pré-visualização ===== */
 .preview {
   flex: 1;
-  background:#1a0160;
+  background: #1a0160;
   padding: 20px;
   overflow-y: auto;
 }
 
-/* Formulário de edição */
+/* ===== Formulário ===== */
 .formulario {
   flex: 1;
   background: #1a0160;
@@ -117,8 +134,29 @@ input, textarea {
   overflow-y: auto;
 }
 
-label {
-  display: block;
-  margin-top: 10px;
-  margin-bottom: 5px;
+.preview h2, .formulario h2, .sidebar h2 {
+  color: #13bc3b;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ===== Imagem de pré-visualização ===== */
+#previewFoto {
+  border: 2px solid #13bc3b;
+}
+
+/* ===== Responsividade ===== */
+@media (max-width: 900px) {
+  .curriculo-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    text-align: center;
+  }
+
+  .preview, .formulario {
+    width: 100%;
+  }
 }
