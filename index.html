@@ -1,37 +1,38 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gerador de Currículo</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- Tela inicial com botão -->
+  <!-- ===== Tela Inicial ===== -->
   <div id="homeScreen" class="screen active">
-    <div class="auth-container" style="text-align: center; align-items: center;">
+    <div class="auth-container">
       <div class="auth-logo">
-        <img src="logo.png" alt="Logo da Empresa" class="logo-small">
+        <img src="logo.png" alt="Logo da Empresa" class="logo-small" />
       </div>
-      <h2>Crie seu Currículo Profissional Gratuitamente</h2>
-      <p>Monte um currículo moderno e pronto para impressão.</p>
-      <button class="btn" onclick="showScreen('curriculoScreen')">Crie seu Currículo</button>
+      <h1>Crie seu Currículo Profissional</h1>
+      <p>Monte seu currículo moderno e baixe em PDF gratuitamente.</p>
+      <button class="btn" onclick="iniciarCurriculo()">Crie seu Currículo</button>
     </div>
   </div>
 
-  <!-- Tela de Criação do Currículo -->
+  <!-- ===== Tela de Criação do Currículo ===== -->
   <div id="curriculoScreen" class="screen">
     <div class="curriculo-container">
 
+    
       <!-- Sidebar -->
       <aside class="sidebar">
         <h2>Seções</h2>
         <ul>
           <li>Dados Pessoais</li>
           <li>Formação Acadêmica</li>
-          <li>Experiência Profissional</li>
-          <li>Habilidades Técnicas e Comportamentais</li>
+          <li>Experiência</li>
+          <li>Habilidades</li>
           <li>Cursos</li>
         </ul>
       </aside>
@@ -39,21 +40,23 @@
       <!-- Pré-visualização -->
       <div class="preview">
         <h2>Pré-visualização do Currículo</h2>
-        <div id="previewContent">
-          <img id="previewFoto" src="" alt="Foto" style="display:none; width:120px; height:120px; border-radius:50%; object-fit:cover;" />
-          <p><strong>Nome:</strong> <span id="prevNome"></span></p>
-          <p><strong>Email:</strong> <span id="prevEmail"></span></p>
-          <p><strong>Telefone:</strong> <span id="prevTelefone"></span></p>
-          <p><strong>Objetivo Profissional:</strong> <span id="prevObjetivo"></span></p>
-          <p><strong>Formação Acadêmica:</strong> <span id="prevFormacao"></span></p>
-          <p><strong>Experiência Profissional:</strong> <span id="prevExperiencia"></span></p>
-          <p><strong>Hard Skills / Habilidades Técnicas:</strong> <span id="prevHabilidades"></span></p>
-          <p><strong>Soft Skills / Habilidades Comportamentais:</strong> <span id="prevHabilidadesComp"></span></p>
-          <p><strong>Cursos:</strong> <span id="prevCursos"></span></p>
-          <p><strong>LinkedIn:</strong> <a id="prevLinkedin" href="#" target="_blank"></a></p>
+        <div id="previewBox">
+          <div id="previewContent">
+            <img id="previewFoto" src="" alt="Foto"
+              style="display:none; width:120px; height:120px; border-radius:50%; object-fit:cover;" />
+            <p><strong>Nome:</strong> <span id="prevNome"></span></p>
+            <p><strong>Email:</strong> <span id="prevEmail"></span></p>
+            <p><strong>Telefone:</strong> <span id="prevTelefone"></span></p>
+            <p><strong>Formação Acadêmica:</strong> <span id="prevFormacao"></span></p>
+            <p><strong>Experiência Profissional:</strong> <span id="prevExperiencia"></span></p>
+            <p><strong>Hard Skills:</strong> <span id="prevHabilidades"></span></p>
+            <p><strong>Soft Skills:</strong> <span id="prevHabilidadesComp"></span></p>
+            <p><strong>Cursos:</strong> <span id="prevCursos"></span></p>
+            <p><strong>LinkedIn:</strong> <a id="prevLinkedin" href="#" target="_blank"></a></p>
+          </div>
         </div>
         <button class="btn red" onclick="gerarPDF()">Gerar PDF</button>
-        <button class="btn" onclick="showScreen('homeScreen')">Voltar</button>
+        <button class="btn" onclick="logout()">Voltar</button>
       </div>
 
       <!-- Formulário -->
@@ -64,31 +67,28 @@
         <input type="file" id="foto" accept="image/*" onchange="previewFoto(event)" />
 
         <label>Nome:</label>
-        <input type="text" id="nome" oninput="updatePreview()" />
+        <input type="text" id="nome" placeholder="Digite seu nome completo" oninput="updatePreview()" />
 
         <label>Email:</label>
-        <input type="email" id="email" oninput="updatePreview()" />
+        <input type="email" id="email" placeholder="seuemail@email.com" oninput="updatePreview()" />
 
         <label>Telefone:</label>
         <input type="tel" id="telefone" placeholder="(xx) xxxxx-xxxx" oninput="updatePreview()" />
 
-        <label>Objetivo Profissional:</label>
-        <textarea id="objetivo" oninput="updatePreview()"></textarea>
-
         <label>Formação Acadêmica:</label>
-        <textarea id="formacao" oninput="updatePreview()"></textarea>
+        <textarea id="formacao" placeholder="Informe sua formação, cursos técnicos ou graduação..." oninput="updatePreview()"></textarea>
 
         <label>Experiência Profissional:</label>
-        <textarea id="experiencia" oninput="updatePreview()"></textarea>
+        <textarea id="experiencia" placeholder="Descreva suas experiências anteriores..." oninput="updatePreview()"></textarea>
 
-        <label>Hard Skills/Habilidades Técnicas:</label>
-        <textarea id="habilidades" oninput="updatePreview()"></textarea>
+        <label>Hard Skills:</label>
+        <textarea id="habilidades" placeholder="Exemplo: Pacote Office, Canva, Atendimento ao Cliente, Excel, Edição de Vídeo, Redes Sociais, Inglês, Programação, Digitação, etc." oninput="updatePreview()"></textarea>
 
-        <label>Soft Skills/Habilidades Comportamentais:</label>
-        <textarea id="habilidadesComp" oninput="updatePreview()"></textarea>
+        <label>Soft Skills:</label>
+        <textarea id="habilidadesComp" placeholder="Exemplo: Trabalho em equipe, Comunicação, Criatividade, Organização, Proatividade, Liderança, Empatia, Pensamento crítico, Flexibilidade, etc." oninput="updatePreview()"></textarea>
 
         <label>Cursos:</label>
-        <textarea id="cursos" oninput="updatePreview()"></textarea>
+        <textarea id="cursos" placeholder="Liste cursos extras ou certificações..." oninput="updatePreview()"></textarea>
 
         <label>LinkedIn:</label>
         <input type="url" id="linkedin" placeholder="https://linkedin.com/in/seu-perfil" oninput="updatePreview()" />
@@ -97,7 +97,7 @@
     </div>
   </div>
 
-  <!-- jsPDF -->
+  <!-- ===== jsPDF + Script ===== -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="script.js"></script>
 </body>

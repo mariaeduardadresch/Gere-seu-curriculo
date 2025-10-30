@@ -2,7 +2,7 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: #1a0160; /* Fundo azul escuro */
+  background: #1a0160;
   color: #ffffff;
 }
 
@@ -72,7 +72,7 @@ input, textarea {
   font-size: 16px;
   padding: 12px;
   margin-bottom: 10px;
-  width: 100%;
+  width: 90%;
   border-radius: 6px;
   border: none;
   background: #ffffff;
@@ -107,6 +107,7 @@ label {
   background: #1a0160;
   color: white;
   padding: 20px;
+  border-right: 2px solid #13bc3b;
 }
 
 .sidebar ul {
@@ -116,6 +117,15 @@ label {
 
 .sidebar li {
   margin-bottom: 10px;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background 0.3s;
+}
+
+.sidebar li:hover {
+  background: #13bc3b;
+  color: #fff;
 }
 
 /* ===== Pré-visualização ===== */
@@ -124,6 +134,7 @@ label {
   background: #1a0160;
   padding: 20px;
   overflow-y: auto;
+  border-left: 2px solid #13bc3b;
 }
 
 /* ===== Formulário ===== */
@@ -132,6 +143,9 @@ label {
   background: #1a0160;
   padding: 20px;
   overflow-y: auto;
+  border-left: 2px solid #13bc3b;
+  border-right: 2px solid #13bc3b;
+  border-radius: 8px;
 }
 
 .preview h2, .formulario h2, .sidebar h2 {
@@ -154,9 +168,32 @@ label {
   .sidebar {
     width: 100%;
     text-align: center;
+    border-right: none;
+    border-bottom: 2px solid #13bc3b;
   }
 
   .preview, .formulario {
     width: 100%;
+    border: none;
   }
 }
+
+/* ===== Caixa de Pré-visualização ===== */
+#previewBox {
+  border: 2px solid #13bc3b;
+  border-radius: 10px;
+  padding: 20px;
+  background: #ffffff10; /* leve transparência branca */
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+#previewContent p {
+  margin: 8px 0;
+  line-height: 1.4;
+}
+
+#previewContent strong {
+  color: #13bc3b;
+}
+

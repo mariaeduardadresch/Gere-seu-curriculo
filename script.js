@@ -14,6 +14,28 @@ function logout() {
   showScreen("homeScreen");
 }
 
+// Fazer com que os itens da barra lateral rolem até a parte do formulário
+document.addEventListener("DOMContentLoaded", () => {
+  const secoes = {
+    "Dados Pessoais": "nome",
+    "Formação Acadêmica": "formacao",
+    "Experiência": "experiencia",
+    "Habilidades": "habilidades",
+    "Cursos": "cursos"
+  };
+
+  document.querySelectorAll(".sidebar li").forEach(item => {
+    item.addEventListener("click", () => {
+      const idCampo = secoes[item.textContent.trim()];
+      if (idCampo) {
+        const campo = document.getElementById(idCampo);
+        if (campo) campo.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    });
+  });
+});
+
+
 // Atualizar pré-visualização
 function updatePreview() {
   document.getElementById("prevNome").textContent = document.getElementById("nome").value;
