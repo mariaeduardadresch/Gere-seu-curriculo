@@ -25,18 +25,6 @@
     <div class="curriculo-container">
 
     
-      <!-- Sidebar -->
-      <aside class="sidebar">
-        <h2>Seções</h2>
-        <ul>
-          <li>Dados Pessoais</li>
-          <li>Formação Acadêmica</li>
-          <li>Experiência</li>
-          <li>Habilidades</li>
-          <li>Cursos</li>
-        </ul>
-      </aside>
-
       <!-- Pré-visualização -->
       <div class="preview">
         <h2>Pré-visualização do Currículo</h2>
@@ -47,6 +35,7 @@
             <p><strong>Nome:</strong> <span id="prevNome"></span></p>
             <p><strong>Email:</strong> <span id="prevEmail"></span></p>
             <p><strong>Telefone:</strong> <span id="prevTelefone"></span></p>
+            <p><strong>Objetivo Profissional:</strong> <span id="prevObjetivo"></span></p>
             <p><strong>Formação Acadêmica:</strong> <span id="prevFormacao"></span></p>
             <p><strong>Experiência Profissional:</strong> <span id="prevExperiencia"></span></p>
             <p><strong>Hard Skills:</strong> <span id="prevHabilidades"></span></p>
@@ -74,21 +63,50 @@
 
         <label>Telefone:</label>
         <input type="tel" id="telefone" placeholder="(xx) xxxxx-xxxx" oninput="updatePreview()" />
+        
+        <label>Objetivo Profissional:</label>
+        <textarea id="objetivo" placeholder="Descreva seu objetivo profissional..." oninput="updatePreview()"></textarea>
+
 
         <label>Formação Acadêmica:</label>
-        <textarea id="formacao" placeholder="Informe sua formação, cursos técnicos ou graduação..." oninput="updatePreview()"></textarea>
+        <div class="multi-input">
+  <input type="text" id="formacaoInput" placeholder="Informe sua formação, cursos técnicos ou graduação...">
+  <button type="button" onclick="habilitarCampo('formacao')">+</button>
+  <ul id="formacaoList"></ul>
+</div>
 
-        <label>Experiência Profissional:</label>
-        <textarea id="experiencia" placeholder="Descreva suas experiências anteriores..." oninput="updatePreview()"></textarea>
+      
 
-        <label>Hard Skills:</label>
-        <textarea id="habilidades" placeholder="Exemplo: Pacote Office, Canva, Atendimento ao Cliente, Excel, Edição de Vídeo, Redes Sociais, Inglês, Programação, Digitação, etc." oninput="updatePreview()"></textarea>
+       <label>Experiência Profissional:</label>
+<div class="multi-input">
+  <input type="text" id="experienciaInput" placeholder="Digite suas experiências anteriores">
+  <button type="button" onclick="habilitarCampo('experiencia')">+</button>
+<ul id="experienciaList"></ul>
+</div>
 
-        <label>Soft Skills:</label>
-        <textarea id="habilidadesComp" placeholder="Exemplo: Trabalho em equipe, Comunicação, Criatividade, Organização, Proatividade, Liderança, Empatia, Pensamento crítico, Flexibilidade, etc." oninput="updatePreview()"></textarea>
+<label>Hard Skills:</label>
+<div class="multi-input">
+  <input type="text" id="habilidadesInput" placeholder="Ex.:Pacote Office, Canva, Excel, Edição de Vídeo, etc."">
+  <button type="button" onclick="habilitarCampo('habilidades')">+</button>
+  <ul id="habilidadesList"></ul>
+</div>
 
+<label>Soft Skills:</label>
+<div class="multi-input">
+  <input type="text" id="habilidadesCompInput" placeholder="Ex.:Trabalho em equipe, Comunicação, Liderança, Pensamento crítico,etc.">
+  <button type="button" onclick="habilitarCampo('habilidadesComp')">+</button>
+ <ul id="habilidadesCompList"></ul>
+</div>
+
+     
         <label>Cursos:</label>
-        <textarea id="cursos" placeholder="Liste cursos extras ou certificações..." oninput="updatePreview()"></textarea>
+<div class="multi-input">
+  <input type="text" id="cursosInput" placeholder="Digite cursos ou certificações">
+ <button type="button" onclick="habilitarCampo('cursos')">+</button>
+  <ul id="cursosList"></ul>
+</div>
+
+        
 
         <label>LinkedIn:</label>
         <input type="url" id="linkedin" placeholder="https://linkedin.com/in/seu-perfil" oninput="updatePreview()" />
