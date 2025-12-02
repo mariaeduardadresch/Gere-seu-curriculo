@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gerador de Currículo</title>
+  <title>Criador de Currículo</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -14,8 +14,8 @@
       <div class="auth-logo">
         <img src="logo.png" alt="Logo da Empresa" class="logo-small" />
       </div>
-      <h1>Crie seu Currículo Profissional</h1>
-      <p>Monte seu currículo moderno e baixe em PDF gratuitamente.</p>
+      <h1>Crie seu Currículo</h1>
+      <p>Crie o seu currículo e baixe em PDF gratuitamente.</p>
       <button class="btn" onclick="iniciarCurriculo()">Crie seu Currículo</button>
     </div>
   </div>
@@ -70,7 +70,7 @@
 
         <label>Formação Acadêmica:</label>
         <div class="multi-input">
-  <input type="text" id="formacaoInput" placeholder="Informe sua formação, cursos técnicos ou graduação...">
+  <input type="text" id="formacaoInput" placeholder="Inclua o nome do curso técnico/graduação, a instituição e o ano de conclusão...">
   <button type="button" onclick="habilitarCampo('formacao')">+</button>
   <ul id="formacaoList"></ul>
 </div>
@@ -93,7 +93,7 @@
 
 <label>Soft Skills:</label>
 <div class="multi-input">
-  <input type="text" id="habilidadesCompInput" placeholder="Ex.:Trabalho em equipe, Comunicação, Liderança, Pensamento crítico,etc.">
+  <input type="text" id="habilidadesCompInput" placeholder="Ex.:Trabalho em equipe, Comunicação, Liderança,Pensamento crítico,etc.">
   <button type="button" onclick="habilitarCampo('habilidadesComp')">+</button>
  <ul id="habilidadesCompList"></ul>
 </div>
@@ -101,7 +101,7 @@
      
         <label>Cursos:</label>
 <div class="multi-input">
-  <input type="text" id="cursosInput" placeholder="Digite cursos ou certificações">
+  <input type="text" id="cursosInput" placeholder="Inclua o nome do curso, a instituição e o ano de conclusão..."">
  <button type="button" onclick="habilitarCampo('cursos')">+</button>
   <ul id="cursosList"></ul>
 </div>

@@ -4,17 +4,15 @@ function showScreen(screenId) {
   document.getElementById(screenId).classList.add("active");
 }
 
-// Botão inicial
 function iniciarCurriculo() {
   showScreen("curriculoScreen");
 }
 
-// Logout volta para a tela inicial
 function logout() {
   showScreen("homeScreen");
 }
 
-// === MULTI-INFORMAÇÕES ===
+// === DADOS DO CURRÍCULO ===
 const multiInfo = {
   formacao: [],
   experiencia: [],
@@ -23,7 +21,7 @@ const multiInfo = {
   cursos: []
 };
 
-// Adicionar informação (Enter ou botão +)
+// === ADICIONAR INFORMAÇÕES ===
 function addInfo(section) {
   const input = document.getElementById(section + "Input");
   const value = input.value.trim();
@@ -36,6 +34,7 @@ function addInfo(section) {
   li.textContent = value;
   li.contentEditable = true;
 
+  // Remover com botão direito
   li.addEventListener("contextmenu", e => {
     e.preventDefault();
     const index = multiInfo[section].indexOf(value);
@@ -44,6 +43,7 @@ function addInfo(section) {
     updatePreview();
   });
 
+  // Atualiza preview ao editar
   li.addEventListener("input", () => {
     const index = Array.from(ul.children).indexOf(li);
     multiInfo[section][index] = li.textContent;
@@ -52,21 +52,20 @@ function addInfo(section) {
 
   ul.appendChild(li);
 
-  // Bloqueia o campo após adicionar
   input.value = "";
   input.disabled = true;
   input.blur();
   updatePreview();
 }
 
-// Desbloqueia o campo ao clicar no +
+// Desbloquear campo ao clicar no botão +
 function habilitarCampo(section) {
   const input = document.getElementById(section + "Input");
   input.disabled = false;
   input.focus();
 }
 
-// Eventos de teclado (Enter funciona corretamente)
+// === EVENTOS UNIVERSAIS ===
 document.addEventListener("DOMContentLoaded", () => {
   const sections = ["formacao", "experiencia", "habilidades", "habilidadesComp", "cursos"];
 
@@ -74,15 +73,29 @@ document.addEventListener("DOMContentLoaded", () => {
     const input = document.getElementById(section + "Input");
     if (!input) return;
 
+    // Pressionar Enter
     input.addEventListener("keyup", e => {
       if (e.key === "Enter" && !input.disabled) {
         e.preventDefault();
         addInfo(section);
       }
     });
+
+    // Clicar/tocar fora do campo (corrigido com atraso)
+    input.addEventListener("blur", () => {
+      const valor = input.value.trim();
+      if (valor && !input.disabled) {
+        setTimeout(() => {
+          if (input.value.trim() === valor && !input.disabled) {
+            addInfo(section);
+          }
+        }, 200);
+      }
+    });
   });
 
-  ["nome", "email", "telefone", "linkedin"].forEach(id => {
+  // Campos básicos + objetivo
+  ["nome", "email", "telefone", "linkedin", "objetivo"].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.addEventListener("input", updatePreview);
   });
@@ -92,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-// === PRÉ-VISUALIZAÇÃO ===
+// === ATUALIZAR PRÉ-VISUALIZAÇÃO ===
 function updatePreview() {
   document.getElementById("prevFormacao").innerHTML = multiInfo.formacao.map(i => "• " + i).join("<br>");
   document.getElementById("prevExperiencia").innerHTML = multiInfo.experiencia.map(i => "• " + i).join("<br>");
@@ -104,7 +117,6 @@ function updatePreview() {
   document.getElementById("prevEmail").textContent = document.getElementById("email").value;
   document.getElementById("prevTelefone").textContent = document.getElementById("telefone").value;
   document.getElementById("prevObjetivo").textContent = document.getElementById("objetivo").value;
-
 
   const linkedin = document.getElementById("linkedin").value;
   const linkElement = document.getElementById("prevLinkedin");
@@ -128,8 +140,7 @@ function previewFoto(event) {
   reader.readAsDataURL(event.target.files[0]);
 }
 
-
-// === GERAR CURRÍCULO E PDF PROFISSIONAL ===
+// === GERAR PDF PROFISSIONAL ===
 function gerarPDF() {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF("p", "mm", "a4");
@@ -139,40 +150,42 @@ function gerarPDF() {
   const margin = 20;
   let y = margin;
 
-  // === Funções auxiliares ===
+  // Nova página
   function novaPagina() {
     doc.addPage();
     y = margin;
   }
 
+  // === Seções com texto vertical e justificado ===
   function addSection(title, contentArray) {
     if (!contentArray || contentArray.length === 0) return;
 
     if (y > pageHeight - 40) novaPagina();
 
     doc.setDrawColor(200);
-    doc.setLineWidth(0.3);
     doc.line(margin, y, pageWidth - margin, y);
     y += 8;
 
     doc.setFont("helvetica", "bold");
     doc.setFontSize(13);
-    doc.setTextColor(0, 0, 0);
     doc.text(title.toUpperCase(), margin, y);
     y += 6;
 
     doc.setFont("helvetica", "normal");
     doc.setFontSize(11);
-    doc.setTextColor(50, 50, 50);
 
-    const content = contentArray.map(i => "• " + i).join("\n");
-    const lines = doc.splitTextToSize(content, pageWidth - 2 * margin);
+    // LISTA VERTICAL
+    contentArray.forEach(item => {
+      const texto = "• " + item;
+      const linhas = doc.splitTextToSize(texto, pageWidth - 2 * margin);
 
-    for (let i = 0; i < lines.length; i++) {
-      if (y > pageHeight - 20) novaPagina();
-      doc.text(lines[i], margin, y);
-      y += 6;
-    }
+      linhas.forEach(linha => {
+        if (y > pageHeight - 20) novaPagina();
+        doc.text(linha, margin, y);
+        y += 6;
+      });
+    });
+
     y += 4;
   }
 
@@ -184,47 +197,45 @@ function gerarPDF() {
   const objetivo = document.getElementById("objetivo").value || "";
   const foto = document.getElementById("previewFoto");
 
-  // Foto 35x45mm (proporção retrato)
+  // Foto 35x45 mm
   if (foto && foto.src && foto.style.display !== "none") {
-    const fotoLargura = 35;
-    const fotoAltura = 45;
-    doc.addImage(foto.src, "JPEG", pageWidth - margin - fotoLargura, y, fotoLargura, fotoAltura);
+    doc.addImage(foto.src, "JPEG", pageWidth - margin - 35, y, 35, 45);
   }
 
-  // Nome
   doc.setFont("helvetica", "bold");
   doc.setFontSize(20);
-  doc.setTextColor(0, 0, 0); // preto
   doc.text(nome, margin, y + 12);
   y += 20;
 
-  // Dados para contato
   doc.setFont("helvetica", "normal");
   doc.setFontSize(11);
-  doc.setTextColor(70, 70, 70);
   if (telefone) { doc.text("Telefone: " + telefone, margin, y); y += 6; }
   if (email) { doc.text("E-mail: " + email, margin, y); y += 6; }
   if (linkedin) { doc.text("LinkedIn: " + linkedin, margin, y); y += 8; }
 
-  // Objetivo Profissional
-if (objetivo.trim() !== "") {
-  // Se houver foto, empurra o texto um pouco mais pra baixo
-  if (foto && foto.src && foto.style.display !== "none") y += 20;
+  // Objetivo Profissional (justificado + sem quebrar palavras)
+  if (objetivo.trim() !== "") {
+    if (foto && foto.src && foto.style.display !== "none") y += 20;
+
     doc.setFont("helvetica", "bold");
     doc.setFontSize(13);
-    doc.setTextColor(0, 0, 0);
     doc.text("OBJETIVO PROFISSIONAL", margin, y);
     y += 7;
 
     doc.setFont("helvetica", "normal");
     doc.setFontSize(11);
-    doc.setTextColor(60, 60, 60);
-    const linhasObj = doc.splitTextToSize(objetivo, pageWidth - 2 * margin);
+
+    const linhasObj = doc.splitTextToSize(
+      objetivo.replace(/\n+/g, " ").replace(/\s{2,}/g, " "),
+      pageWidth - 2 * margin
+    );
+
     linhasObj.forEach(l => {
       if (y > pageHeight - 20) novaPagina();
       doc.text(l, margin, y);
       y += 6;
     });
+
     y += 5;
   }
 
@@ -234,12 +245,6 @@ if (objetivo.trim() !== "") {
   addSection("Cursos", multiInfo.cursos);
   addSection("Hard Skills", multiInfo.habilidades);
   addSection("Soft Skills", multiInfo.habilidadesComp);
-
-  // Linha final
-  if (y > pageHeight - 20) novaPagina();
-  doc.setDrawColor(180);
-  doc.setLineWidth(0.2);
-  doc.line(margin, pageHeight - 15, pageWidth - margin, pageHeight - 15);
 
   doc.save(`${nome.replaceAll(" ", "_")}_Curriculo.pdf`);
 }
