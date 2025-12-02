@@ -1,7 +1,7 @@
 # 💼 My Landing Page — Gerador de Currículos
 
 Este projeto é uma **landing page interativa** desenvolvida como parte do trabalho extensionista da Uninter.  
-Ela permite que o usuário faça **cadastro, login e gere seu próprio currículo em PDF**.
+Ela permite que o usuário  **gere seu próprio currículo em PDF**.
 
 ---
 
@@ -14,16 +14,8 @@ Ela permite que o usuário faça **cadastro, login e gere seu próprio currícul
 ---
 
 ## ⚙️ Funcionalidades
-- Tela de cadastro e login de usuários  
-- Conexão com API backend (Spring Boot)  
 - Geração automática de currículo em PDF  
 - Interface moderna e responsiva
-
----
-
-## 🔗 Backend do Projeto
-O backend deste projeto foi desenvolvido em Spring Boot e está disponível neste repositório:  
-👉 [curriculo-backend](https://github.com/techprincesss/curriculo-backend)
 
 ---
 
