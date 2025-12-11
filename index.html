@@ -16,7 +16,7 @@
       </div>
       <h1>Crie seu Currículo</h1>
       <p>Crie o seu currículo e baixe em PDF gratuitamente.</p>
-      <button class="btn" onclick="iniciarCurriculo()">Crie seu Currículo</button>
+      <button class="btn" type="button" onclick="iniciarCurriculo()">Crie seu Currículo</button>
     </div>
   </div>
 
@@ -24,7 +24,6 @@
   <div id="curriculoScreen" class="screen">
     <div class="curriculo-container">
 
-    
       <!-- Pré-visualização -->
       <div class="preview">
         <h2>Pré-visualização do Currículo</h2>
@@ -44,12 +43,12 @@
             <p><strong>LinkedIn:</strong> <a id="prevLinkedin" href="#" target="_blank"></a></p>
           </div>
         </div>
-        <button class="btn red" onclick="gerarPDF()">Gerar PDF</button>
-        <button class="btn" onclick="logout()">Voltar</button>
+        <button class="btn red" type="button" onclick="gerarPDF()">Gerar PDF</button>
+        <button class="btn" type="button" onclick="logout()">Voltar</button>
       </div>
 
       <!-- Formulário -->
-      <div class="formulario">
+      <div class="formulario" id="formulario">
         <h2>Edite suas informações</h2>
 
         <label>Foto:</label>
@@ -67,46 +66,45 @@
         <label>Objetivo Profissional:</label>
         <textarea id="objetivo" placeholder="Descreva seu objetivo profissional..." oninput="updatePreview()"></textarea>
 
-
+        <!-- Formação Acadêmica (multi) -->
         <label>Formação Acadêmica:</label>
-        <div class="multi-input">
-  <input type="text" id="formacaoInput" placeholder="Inclua o nome do curso técnico/graduação, a instituição e o ano de conclusão...">
-  <button type="button" onclick="habilitarCampo('formacao')">+</button>
-  <ul id="formacaoList"></ul>
-</div>
+        <div class="multi-input campo-multiplo">
+          <input type="text" id="formacaoInput" placeholder="Inclua o nome do curso, instituição e ano..." />
+          <button class="add-btn" type="button" data-tipo="formacao">+</button>
+        </div>
+        <ul id="formacaoList"></ul>
 
-      
+        <!-- Experiência Profissional (multi) -->
+        <label>Experiência Profissional:</label>
+        <div class="multi-input campo-multiplo">
+          <input type="text" id="experienciaInput" placeholder="Digite suas experiências anteriores" />
+          <button class="add-btn" type="button" data-tipo="experiencia">+</button>
+        </div>
+        <ul id="experienciaList"></ul>
 
-       <label>Experiência Profissional:</label>
-<div class="multi-input">
-  <input type="text" id="experienciaInput" placeholder="Digite suas experiências anteriores">
-  <button type="button" onclick="habilitarCampo('experiencia')">+</button>
-<ul id="experienciaList"></ul>
-</div>
+        <!-- Hard Skills (multi) -->
+        <label>Hard Skills:</label>
+        <div class="multi-input campo-multiplo">
+          <input type="text" id="habilidadesInput" placeholder="Ex.: Excel, SQL, Power BI" />
+          <button class="add-btn" type="button" data-tipo="habilidades">+</button>
+        </div>
+        <ul id="habilidadesList"></ul>
 
-<label>Hard Skills:</label>
-<div class="multi-input">
-  <input type="text" id="habilidadesInput" placeholder="Ex.:Pacote Office, Canva, Excel, Edição de Vídeo, etc."">
-  <button type="button" onclick="habilitarCampo('habilidades')">+</button>
-  <ul id="habilidadesList"></ul>
-</div>
+        <!-- Soft Skills (multi) -->
+        <label>Soft Skills:</label>
+        <div class="multi-input campo-multiplo">
+          <input type="text" id="habilidadesCompInput" placeholder="Ex.: Comunicação, Trabalho em equipe" />
+          <button class="add-btn" type="button" data-tipo="habilidadesComp">+</button>
+        </div>
+        <ul id="habilidadesCompList"></ul>
 
-<label>Soft Skills:</label>
-<div class="multi-input">
-  <input type="text" id="habilidadesCompInput" placeholder="Ex.:Trabalho em equipe, Comunicação, Liderança,Pensamento crítico,etc.">
-  <button type="button" onclick="habilitarCampo('habilidadesComp')">+</button>
- <ul id="habilidadesCompList"></ul>
-</div>
-
-     
+        <!-- Cursos (multi) -->
         <label>Cursos:</label>
-<div class="multi-input">
-  <input type="text" id="cursosInput" placeholder="Inclua o nome do curso, a instituição e o ano de conclusão..."">
- <button type="button" onclick="habilitarCampo('cursos')">+</button>
-  <ul id="cursosList"></ul>
-</div>
-
-        
+        <div class="multi-input campo-multiplo">
+          <input type="text" id="cursosInput" placeholder="Inclua nome do curso, instituição e ano..." />
+          <button class="add-btn" type="button" data-tipo="cursos">+</button>
+        </div>
+        <ul id="cursosList"></ul>
 
         <label>LinkedIn:</label>
         <input type="url" id="linkedin" placeholder="https://linkedin.com/in/seu-perfil" oninput="updatePreview()" />
