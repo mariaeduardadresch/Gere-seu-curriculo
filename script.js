@@ -1,235 +1,499 @@
-// ===== Navegação de telas =====
-function showScreen(screenId) {
-  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
-  document.getElementById(screenId).classList.add("active");
+// ============================================
+// GERE SEU CURRÍCULO
+// JavaScript compatível com o HTML atual
+// ============================================
+
+const $ = (id) => document.getElementById(id);
+
+// Elementos principais
+const homeScreen = $("homeScreen");
+const criador = $("criador");
+const startButton = $("startButton");
+const headerCreate = $("headerCreate");
+const logoHome = $("logoHome");
+const resumeForm = $("resumeForm");
+
+// Dados das listas
+const dados = {
+  formacao: [],
+  experiencia: [],
+  habilidade: [],
+  softSkill: [],
+  curso: []
+};
+
+// Configuração das listas
+const listas = {
+  formacao: {
+    input: "formacaoInput",
+    lista: "formacaoList",
+    preview: "previewFormacao",
+    placeholder: "Sua formação aparecerá aqui."
+  },
+
+  experiencia: {
+    input: "experienciaInput",
+    lista: "experienciaList",
+    preview: "previewExperiencia",
+    placeholder: "Suas experiências aparecerão aqui."
+  },
+
+  habilidade: {
+    input: "habilidadeInput",
+    lista: "habilidadeList",
+    preview: "previewHabilidades",
+    placeholder: "Suas habilidades aparecerão aqui."
+  },
+
+  softSkill: {
+    input: "softSkillInput",
+    lista: "softSkillList",
+    preview: "previewSoftSkills",
+    placeholder: "Suas competências pessoais aparecerão aqui."
+  },
+
+  curso: {
+    input: "cursoInput",
+    lista: "cursoList",
+    preview: "previewCursos",
+    placeholder: "Seus cursos aparecerão aqui."
+  }
+};
+
+let fotoData = "";
+
+// ============================================
+// NAVEGAÇÃO
+// ============================================
+
+function iniciarCurriculo() {
+  homeScreen.classList.add("hidden");
+  criador.classList.remove("hidden");
+
+  criador.scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
 }
 
-function iniciarCurriculo() { showScreen("curriculoScreen"); }
-function logout() { showScreen("homeScreen"); }
+function voltarInicio() {
+  criador.classList.add("hidden");
+  homeScreen.classList.remove("hidden");
 
-// ===== Preview da foto =====
-function previewFoto(event) {
-  const reader = new FileReader();
-  reader.onload = function(){
-    const output = document.getElementById("previewFoto");
-    output.src = reader.result;
-    output.style.display = "block";
-    output.dataset.base64 = reader.result;
-    updatePreview();
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
+// Botão principal
+startButton.addEventListener("click", iniciarCurriculo);
+
+// Link do cabeçalho
+headerCreate.addEventListener("click", (event) => {
+  event.preventDefault();
+  iniciarCurriculo();
+});
+
+// Logo: voltar à página inicial
+logoHome.addEventListener("click", (event) => {
+  event.preventDefault();
+  voltarInicio();
+});
+
+// ============================================
+// FOTO
+// ============================================
+
+$("foto").addEventListener("change", (event) => {
+  const arquivo = event.target.files[0];
+
+  if (!arquivo) {
+    fotoData = "";
+    atualizarFoto();
+    return;
+  }
+
+  if (!arquivo.type.startsWith("image/")) {
+    alert("Selecione um arquivo de imagem válido.");
+    event.target.value = "";
+    return;
+  }
+
+  const leitor = new FileReader();
+
+  leitor.onload = () => {
+    fotoData = leitor.result;
+    atualizarFoto();
   };
-  if (event.target.files && event.target.files[0]) reader.readAsDataURL(event.target.files[0]);
+
+  leitor.onerror = () => {
+    alert("Não foi possível carregar a foto.");
+  };
+
+  leitor.readAsDataURL(arquivo);
+});
+
+function atualizarFoto() {
+  const imagem = $("previewPhoto");
+  const recipiente = $("previewPhotoWrap");
+
+  if (fotoData) {
+    imagem.src = fotoData;
+    recipiente.classList.remove("hidden");
+  } else {
+    imagem.removeAttribute("src");
+    recipiente.classList.add("hidden");
+  }
 }
 
-// ===== utilidades para listas =====
-function getIds(tipo) {
-  return { inputId: `${tipo}Input`, listId: `${tipo}List` };
-}
+// ============================================
+// ADICIONAR E REMOVER ITENS
+// ============================================
 
-function createListItem(listEl, text, tipo) {
-  const li = document.createElement("li");
-  const liId = `${tipo}-li-${Date.now()}-${Math.floor(Math.random()*1000)}`;
-  li.id = liId;
+function adicionarItem(tipo) {
+  const config = listas[tipo];
 
-  const span = document.createElement("span");
-  span.className = "item-text";
-  span.textContent = text;
-  span.tabIndex = 0;
-  span.title = "Clique para editar";
+  if (!config) return;
 
-  span.addEventListener("click", e => { e.preventDefault(); startEditingItem(tipo, liId); });
-  span.addEventListener("contextmenu", e => { e.preventDefault(); startEditingItem(tipo, liId); });
-  span.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); startEditingItem(tipo, liId); } });
+  const input = $(config.input);
+  const valor = input.value.trim();
 
-  li.appendChild(span);
-
-  const removeBtn = document.createElement("button");
-  removeBtn.className = "remove-btn";
-  removeBtn.type = "button";
-  removeBtn.textContent = "×";
-  removeBtn.title = "Remover";
-  removeBtn.addEventListener("click", () => { listEl.removeChild(li); updatePreview(); });
-
-  li.appendChild(removeBtn);
-  listEl.appendChild(li);
-}
-
-function startEditingItem(tipo, liId) {
-  const ids = getIds(tipo);
-  const inputEl = document.getElementById(ids.inputId);
-  const li = document.getElementById(liId);
-  if (!inputEl || !li) return;
-  const span = li.querySelector(".item-text");
-  if (!span) return;
-  inputEl.disabled = false;
-  inputEl.value = span.textContent;
-  inputEl.focus();
-  inputEl.dataset.editing = liId;
-}
-
-function addOrToggleCampo(tipo) {
-  const ids = getIds(tipo);
-  const inputEl = document.getElementById(ids.inputId);
-  const listEl = document.getElementById(ids.listId);
-  if (!inputEl || !listEl) return;
-
-  if (inputEl.disabled) {
-    inputEl.disabled = false;
-    inputEl.value = "";
-    inputEl.dataset.editing = "";
-    inputEl.focus();
+  if (!valor) {
+    input.focus();
     return;
   }
 
-  const val = inputEl.value.trim();
-  if (val === "") return;
+  dados[tipo].push(valor);
+  input.value = "";
 
-  const editingLiId = inputEl.dataset.editing;
-  if (editingLiId) {
-    const li = document.getElementById(editingLiId);
-    if (li) li.querySelector(".item-text").textContent = val;
-    inputEl.disabled = true;
-    inputEl.dataset.editing = "";
-    inputEl.value = "";
-    updatePreview();
+  renderizarLista(tipo);
+  atualizarPreview();
+
+  input.focus();
+}
+
+function removerItem(tipo, indice) {
+  dados[tipo].splice(indice, 1);
+
+  renderizarLista(tipo);
+  atualizarPreview();
+}
+
+function renderizarLista(tipo) {
+  const config = listas[tipo];
+  const lista = $(config.lista);
+
+  lista.replaceChildren();
+
+  dados[tipo].forEach((valor, indice) => {
+    const item = document.createElement("li");
+    item.className = "entry-item";
+
+    const texto = document.createElement("span");
+    texto.textContent = valor;
+
+    const botao = document.createElement("button");
+    botao.type = "button";
+    botao.className = "remove-entry";
+    botao.textContent = "×";
+    botao.setAttribute("aria-label", "Remover item");
+
+    botao.addEventListener("click", () => {
+      removerItem(tipo, indice);
+    });
+
+    item.append(texto, botao);
+    lista.appendChild(item);
+  });
+}
+
+// Conectar os botões de adicionar
+document.querySelectorAll("[data-add]").forEach((botao) => {
+  botao.addEventListener("click", () => {
+    adicionarItem(botao.dataset.add);
+  });
+});
+
+// Permitir adicionar com Enter
+Object.entries(listas).forEach(([tipo, config]) => {
+  $(config.input).addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      adicionarItem(tipo);
+    }
+  });
+});
+
+// ============================================
+// ATUALIZAR A PRÉVIA DO CURRÍCULO
+// ============================================
+
+function definirTexto(id, valor, padrao = "") {
+  const elemento = $(id);
+
+  if (elemento) {
+    elemento.textContent = valor || padrao;
+  }
+}
+
+function atualizarPreview() {
+  const nome = $("nome").value.trim();
+  const email = $("email").value.trim();
+  const telefone = $("telefone").value.trim();
+  const localizacao = $("localizacao").value.trim();
+  const objetivo = $("objetivo").value.trim();
+  const linkedin = $("linkedin").value.trim();
+
+  definirTexto("previewNome", nome, "Seu nome completo");
+
+  const contato = [email, telefone].filter(Boolean).join(" | ");
+
+  definirTexto(
+    "previewContato",
+    contato,
+    "seuemail@email.com"
+  );
+
+  definirTexto("previewLocalizacao", localizacao);
+  definirTexto("previewLinkedin", linkedin);
+
+  $("previewLocalizacao").style.display =
+    localizacao ? "" : "none";
+
+  $("previewLinkedin").style.display =
+    linkedin ? "" : "none";
+
+  definirTexto("previewObjetivo", objetivo);
+
+  $("previewObjetivoSection").classList.toggle(
+    "hidden",
+    !objetivo
+  );
+
+  Object.entries(listas).forEach(([tipo, config]) => {
+    const elemento = $(config.preview);
+    elemento.replaceChildren();
+
+    if (dados[tipo].length === 0) {
+      const item = document.createElement("li");
+      item.textContent = config.placeholder;
+      elemento.appendChild(item);
+      return;
+    }
+
+    dados[tipo].forEach((valor) => {
+      const item = document.createElement("li");
+      item.textContent = valor;
+      elemento.appendChild(item);
+    });
+  });
+}
+
+// Atualizar enquanto os campos são preenchidos
+[
+  "nome",
+  "email",
+  "telefone",
+  "localizacao",
+  "objetivo",
+  "linkedin"
+].forEach((id) => {
+  $(id).addEventListener("input", atualizarPreview);
+});
+
+// ============================================
+// GERAR PDF
+// ============================================
+
+$("generateButton").addEventListener("click", () => {
+  if (!resumeForm.reportValidity()) {
     return;
   }
 
-  createListItem(listEl, val, tipo);
-  inputEl.disabled = true;
-  inputEl.value = "";
-  updatePreview();
-}
-
-function handleMultiInputKeydown(tipo, ev) {
-  if (ev.key === "Enter") { ev.preventDefault(); addOrToggleCampo(tipo); }
-}
-
-// ===== preview =====
-function updatePreview() {
-  document.getElementById("prevNome").textContent = document.getElementById("nome")?.value || "";
-  document.getElementById("prevEmail").textContent = document.getElementById("email")?.value || "";
-  document.getElementById("prevTelefone").textContent = document.getElementById("telefone")?.value || "";
-  document.getElementById("prevObjetivo").textContent = document.getElementById("objetivo")?.value || "";
-
-  function listToText(listId) {
-    const ul = document.getElementById(listId);
-    if (!ul) return "";
-    return Array.from(ul.querySelectorAll("li .item-text")).map(s => s.textContent.trim()).join("; ");
+  if (!window.jspdf || !window.jspdf.jsPDF) {
+    alert(
+      "Não foi possível carregar a biblioteca de PDF. " +
+      "Verifique sua conexão com a internet e tente novamente."
+    );
+    return;
   }
 
-  document.getElementById("prevFormacao").textContent = listToText("formacaoList");
-  document.getElementById("prevExperiencia").textContent = listToText("experienciaList");
-  document.getElementById("prevHabilidades").textContent = listToText("habilidadesList");
-  document.getElementById("prevHabilidadesComp").textContent = listToText("habilidadesCompList");
-  document.getElementById("prevCursos").textContent = listToText("cursosList");
+  gerarPDF();
+});
 
-  const linkedin = document.getElementById("linkedin")?.value || "";
-  const linkElement = document.getElementById("prevLinkedin");
-  if (linkedin) { linkElement.href = linkedin; linkElement.textContent = "Acessar Perfil"; }
-  else { linkElement.removeAttribute("href"); linkElement.textContent = ""; }
-}
-
-// ===== gerar PDF =====
 function gerarPDF() {
   const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
-  let y = 20;
-  doc.setFontSize(18);
-  doc.text("Currículo Profissional", 105, y, { align: "center" });
-  y += 14;
 
-  const foto = document.getElementById("previewFoto");
-  if (foto && foto.src && foto.style.display !== "none") {
-    try { doc.addImage(foto.src, "JPEG", 160, 20, 40, 40); } catch(e){}
+  const doc = new jsPDF({
+    orientation: "portrait",
+    unit: "mm",
+    format: "a4"
+  });
+
+  const largura = doc.internal.pageSize.getWidth();
+  const altura = doc.internal.pageSize.getHeight();
+  const margem = 18;
+  const larguraTexto = largura - margem * 2;
+
+  const vinho = [118, 45, 64];
+  const grafite = [48, 43, 44];
+  const cinza = [124, 115, 115];
+
+  let y = 22;
+
+  function verificarEspaco(necessario = 7) {
+    if (y + necessario > altura - 18) {
+      doc.addPage();
+      y = 20;
+    }
   }
 
-  function addSection(title, content) {
-    if (!content || !content.trim()) return;
-    doc.setFontSize(14);
-    doc.setTextColor(0,0,150);
-    doc.text(title, 10, y);
-    y += 7;
-    doc.setFontSize(12);
-    doc.setTextColor(0,0,0);
-    const splitContent = doc.splitTextToSize(content, 180);
-    doc.text(splitContent, 10, y);
-    y += splitContent.length*7 + 6;
-    doc.setDrawColor(200,200,200);
-    doc.line(10, y, 200, y);
-    y += 8;
+  function escreverTexto(texto, opcoes = {}) {
+    if (!texto) return;
+
+    const {
+      tamanho = 10,
+      negrito = false,
+      cor = grafite,
+      espacamento = 5,
+      x = margem,
+      larguraMax = larguraTexto
+    } = opcoes;
+
+    doc.setFont(
+      "helvetica",
+      negrito ? "bold" : "normal"
+    );
+
+    doc.setFontSize(tamanho);
+    doc.setTextColor(...cor);
+
+    const linhas = doc.splitTextToSize(
+      String(texto),
+      larguraMax
+    );
+
+    linhas.forEach((linha) => {
+      verificarEspaco(espacamento);
+
+      doc.text(linha, x, y);
+      y += espacamento;
+    });
   }
 
-  function getListText(listId) {
-    const ul = document.getElementById(listId);
-    if (!ul) return "";
-    return Array.from(ul.querySelectorAll("li .item-text")).map(s => s.textContent.trim()).join("\n- ");
+  // Nome
+  escreverTexto($("nome").value.trim(), {
+    tamanho: 20,
+    negrito: true,
+    cor: vinho,
+    espacamento: 9
+  });
+
+  // Contatos
+  const contatos = [
+    $("email").value.trim(),
+    $("telefone").value.trim()
+  ].filter(Boolean).join(" | ");
+
+  escreverTexto(contatos, {
+    tamanho: 9,
+    cor: cinza,
+    espacamento: 5
+  });
+
+  escreverTexto($("localizacao").value.trim(), {
+    tamanho: 9,
+    cor: cinza,
+    espacamento: 5
+  });
+
+  escreverTexto($("linkedin").value.trim(), {
+    tamanho: 9,
+    cor: cinza,
+    espacamento: 5
+  });
+
+  // Foto opcional
+  if (fotoData) {
+    try {
+      const formato = fotoData.startsWith("data:image/png")
+        ? "PNG"
+        : "JPEG";
+
+      doc.addImage(
+        fotoData,
+        formato,
+        largura - margem - 25,
+        12,
+        25,
+        25
+      );
+    } catch (erro) {
+      console.warn("Não foi possível inserir a foto.", erro);
+    }
   }
 
-  addSection("Nome", document.getElementById("nome")?.value || "");
-  addSection("Email", document.getElementById("email")?.value || "");
-  addSection("Telefone", document.getElementById("telefone")?.value || "");
-  addSection("Objetivo Profissional", document.getElementById("objetivo")?.value || "");
-  addSection("Formação Acadêmica", getListText("formacaoList"));
-  addSection("Experiência Profissional", getListText("experienciaList"));
-  addSection("Hard Skills", getListText("habilidadesList"));
-  addSection("Soft Skills", getListText("habilidadesCompList"));
-  addSection("Cursos e Certificações", getListText("cursosList"));
-  addSection("LinkedIn", document.getElementById("linkedin")?.value || "");
-  doc.save("curriculo.pdf");
+  y += 3;
+
+  doc.setDrawColor(...vinho);
+  doc.setLineWidth(0.7);
+  doc.line(margem, y, largura - margem, y);
+
+  // Objetivo
+  criarSecao(
+    "Objetivo profissional",
+    $("objetivo").value.trim()
+  );
+
+  // Demais seções
+  criarSecao("Formação acadêmica", dados.formacao);
+  criarSecao("Experiência profissional", dados.experiencia);
+  criarSecao("Habilidades técnicas", dados.habilidade);
+  criarSecao("Habilidades pessoais", dados.softSkill);
+  criarSecao("Cursos e certificações", dados.curso);
+
+  // Criar seção do documento
+  function criarSecao(titulo, valores) {
+    const itens = Array.isArray(valores)
+      ? valores.filter(Boolean)
+      : (valores ? [valores] : []);
+
+    if (!itens.length) return;
+
+    y += 6;
+    verificarEspaco(12);
+
+    escreverTexto(titulo.toUpperCase(), {
+      tamanho: 10,
+      negrito: true,
+      cor: vinho,
+      espacamento: 6
+    });
+
+    itens.forEach((item) => {
+      escreverTexto("• " + item, {
+        tamanho: 9.5,
+        espacamento: 5,
+        x: margem + 2,
+        larguraMax: larguraTexto - 2
+      });
+    });
+  }
+
+  // Nome do arquivo
+  const nomeArquivo = $("nome").value.trim()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "") || "curriculo";
+
+  doc.save(`${nomeArquivo}-curriculo.pdf`);
 }
 
-// ===== inicialização =====
-document.addEventListener("DOMContentLoaded", () => {
-  // liga todos os botões + por classe e data-tipo
-  document.querySelectorAll('.add-btn').forEach(btn => {
-    const tipo = btn.dataset.tipo;
-    if (!tipo) return;
-    btn.type = "button";
+// ============================================
+// INICIALIZAÇÃO
+// ============================================
 
-    let lastTap = 0;
-    const callOnce = (ev) => {
-      if (ev && ev.type === 'touchstart') ev.preventDefault();
-      const now = Date.now();
-      if (now - lastTap < 350) return;
-      lastTap = now;
-      addOrToggleCampo(tipo);
-    };
-
-    btn.addEventListener('click', callOnce);
-    btn.addEventListener('mousedown', (e) => { if (e.button === 0) callOnce(e); });
-    btn.addEventListener('auxclick', (e) => { if (e.button === 0) callOnce(e); });
-    btn.addEventListener('touchstart', callOnce, { passive: false });
-  });
-
-  // listeners para inputs multi
-  const tipos = ["formacao","experiencia","habilidades","habilidadesComp","cursos"];
-  tipos.forEach(tipo => {
-    const ids = getIds(tipo);
-    const inputEl = document.getElementById(ids.inputId);
-    const listEl = document.getElementById(ids.listId);
-    if (inputEl) {
-      inputEl.addEventListener("keydown", ev => handleMultiInputKeydown(tipo, ev));
-      inputEl.addEventListener("input", updatePreview);
-    }
-    // se já existirem itens no HTML, vincula edição
-    if (listEl) {
-      Array.from(listEl.querySelectorAll("li")).forEach(li => {
-        const span = li.querySelector(".item-text");
-        if (span && !span.dataset.bound) {
-          span.dataset.bound = "1";
-          span.addEventListener("click", () => startEditingItem(tipo, li.id));
-          span.addEventListener("contextmenu", (e) => { e.preventDefault(); startEditingItem(tipo, li.id); });
-        }
-      });
-    }
-  });
-
-  // listeners gerais
-  ["nome","email","telefone","objetivo","linkedin"].forEach(id => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.addEventListener("input", updatePreview);
-  });
-
-  updatePreview();
-});
+atualizarPreview();

@@ -1,119 +1,269 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Criador de Currículo</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Crie seu currículo gratuitamente, de forma simples e profissional.">
+  <title>Gere seu Currículo | Gratuito</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <header class="topbar">
+    <a href="#" class="brand" id="logoHome">Gere seu <span>Currículo</span></a>
+    <a href="#criador" class="header-link" id="headerCreate">Criar currículo</a>
+  </header>
 
-  <!-- ===== Tela Inicial ===== -->
-  <div id="homeScreen" class="screen active">
-    <div class="auth-container">
-      <div class="auth-logo">
-        <img src="logo.png" alt="Logo da Empresa" class="logo-small" />
+  <main>
+    <section class="hero" id="homeScreen">
+      <div class="hero-content">
+        <span class="eyebrow">SUA PRÓXIMA OPORTUNIDADE COMEÇA AQUI</span>
+        <h1>Seu talento merece um currículo <span>à altura.</span></h1>
+        <p>Crie seu currículo gratuitamente, organize suas experiências e prepare-se para o próximo passo da sua carreira.</p>
+        <button class="primary-button" id="startButton">Criar meu currículo <span>→</span></button>
+        <div class="hero-note">
+          <span>✓</span> Gratuito
+          <span>✓</span> Fácil de preencher
+          <span>✓</span> PDF para baixar
+        </div>
       </div>
-      <h1>Crie seu Currículo</h1>
-      <p>Crie o seu currículo e baixe em PDF gratuitamente.</p>
-      <button class="btn" type="button" onclick="iniciarCurriculo()">Crie seu Currículo</button>
-    </div>
-  </div>
 
-  <!-- ===== Tela de Criação do Currículo ===== -->
-  <div id="curriculoScreen" class="screen">
-    <div class="curriculo-container">
-
-      <!-- Pré-visualização -->
-      <div class="preview">
-        <h2>Pré-visualização do Currículo</h2>
-        <div id="previewBox">
-          <div id="previewContent">
-            <img id="previewFoto" src="" alt="Foto"
-              style="display:none; width:120px; height:120px; border-radius:50%; object-fit:cover;" />
-            <p><strong>Nome:</strong> <span id="prevNome"></span></p>
-            <p><strong>Email:</strong> <span id="prevEmail"></span></p>
-            <p><strong>Telefone:</strong> <span id="prevTelefone"></span></p>
-            <p><strong>Objetivo Profissional:</strong> <span id="prevObjetivo"></span></p>
-            <p><strong>Formação Acadêmica:</strong> <span id="prevFormacao"></span></p>
-            <p><strong>Experiência Profissional:</strong> <span id="prevExperiencia"></span></p>
-            <p><strong>Hard Skills:</strong> <span id="prevHabilidades"></span></p>
-            <p><strong>Soft Skills:</strong> <span id="prevHabilidadesComp"></span></p>
-            <p><strong>Cursos:</strong> <span id="prevCursos"></span></p>
-            <p><strong>LinkedIn:</strong> <a id="prevLinkedin" href="#" target="_blank"></a></p>
+      <div class="hero-visual" aria-label="Exemplo de currículo profissional">
+        <div class="decor decor-one"></div>
+        <div class="decor decor-two"></div>
+        <div class="sample-paper">
+          <div class="sample-top">
+            <div class="sample-avatar">ME</div>
+            <div>
+              <div class="sample-name"></div>
+              <div class="sample-line short"></div>
+            </div>
           </div>
+          <div class="sample-section-title">SOBRE MIM</div>
+          <div class="sample-line"></div>
+          <div class="sample-line"></div>
+          <div class="sample-line medium"></div>
+          <div class="sample-section-title">EXPERIÊNCIA</div>
+          <div class="sample-line medium"></div>
+          <div class="sample-line"></div>
+          <div class="sample-line short"></div>
+          <div class="sample-section-title">FORMAÇÃO</div>
+          <div class="sample-line medium"></div>
+          <div class="sample-line short"></div>
+          <div class="sample-tag">MEU PRÓXIMO CAPÍTULO</div>
         </div>
-        <button class="btn red" type="button" onclick="gerarPDF()">Gerar PDF</button>
-        <button class="btn" type="button" onclick="logout()">Voltar</button>
+        <div class="floating-note"><span>✦</span> Feito por você</div>
+      </div>
+    </section>
+
+    <section class="benefits">
+      <article>
+        <span class="benefit-number">01</span>
+        <h3>Simples de preencher</h3>
+        <p>Adicione suas informações de maneira prática e organizada.</p>
+      </article>
+      <article>
+        <span class="benefit-number">02</span>
+        <h3>Visual profissional</h3>
+        <p>Apresente sua trajetória com clareza e personalidade.</p>
+      </article>
+      <article>
+        <span class="benefit-number">03</span>
+        <h3>Pronto para salvar</h3>
+        <p>Gere seu documento em PDF para guardar ou compartilhar.</p>
+      </article>
+    </section>
+
+    <section class="builder-section hidden" id="criador">
+      <div class="section-heading">
+        <span class="eyebrow">VAMOS COMEÇAR</span>
+        <h2>Monte seu currículo</h2>
+        <p>Preencha os campos abaixo. A prévia será atualizada conforme você digita.</p>
       </div>
 
-      <!-- Formulário -->
-      <div class="formulario" id="formulario">
-        <h2>Edite suas informações</h2>
+      <div class="builder-layout">
+        <form id="resumeForm" class="resume-form">
+          <section class="form-card">
+            <div class="card-heading">
+              <span class="step">01</span>
+              <div>
+                <h3>Informações pessoais</h3>
+                <p>Como as empresas podem entrar em contato com você.</p>
+              </div>
+            </div>
 
-        <label>Foto:</label>
-        <input type="file" id="foto" accept="image/*" onchange="previewFoto(event)" />
+            <label for="foto">Foto profissional (opcional)</label>
+            <input type="file" id="foto" accept="image/*">
 
-        <label>Nome:</label>
-        <input type="text" id="nome" placeholder="Digite seu nome completo" oninput="updatePreview()" />
+            <div class="field-grid">
+              <div class="field full">
+                <label for="nome">Nome completo *</label>
+                <input id="nome" type="text" placeholder="Ex.: Maria Eduarda Dresch" required>
+              </div>
+              <div class="field">
+                <label for="email">E-mail *</label>
+                <input id="email" type="email" placeholder="voce@email.com" required>
+              </div>
+              <div class="field">
+                <label for="telefone">Telefone</label>
+                <input id="telefone" type="tel" placeholder="(00) 00000-0000">
+              </div>
+              <div class="field full">
+                <label for="localizacao">Cidade e estado</label>
+                <input id="localizacao" type="text" placeholder="Ex.: Porto Alegre, RS">
+              </div>
+              <div class="field full">
+                <label for="linkedin">LinkedIn (opcional)</label>
+                <input id="linkedin" type="url" placeholder="https://linkedin.com/in/seu-perfil">
+              </div>
+            </div>
+          </section>
 
-        <label>Email:</label>
-        <input type="email" id="email" placeholder="seuemail@email.com" oninput="updatePreview()" />
+          <section class="form-card">
+            <div class="card-heading">
+              <span class="step">02</span>
+              <div>
+                <h3>Objetivo profissional</h3>
+                <p>Conte qual área ou oportunidade você busca.</p>
+              </div>
+            </div>
+            <label for="objetivo">Resumo ou objetivo</label>
+            <textarea id="objetivo" rows="4" placeholder="Escreva uma breve apresentação profissional..."></textarea>
+          </section>
 
-        <label>Telefone:</label>
-        <input type="tel" id="telefone" placeholder="(xx) xxxxx-xxxx" oninput="updatePreview()" />
-        
-        <label>Objetivo Profissional:</label>
-        <textarea id="objetivo" placeholder="Descreva seu objetivo profissional..." oninput="updatePreview()"></textarea>
+          <section class="form-card">
+            <div class="card-heading">
+              <span class="step">03</span>
+              <div>
+                <h3>Formação acadêmica</h3>
+                <p>Inclua cursos, graduação e outras formações.</p>
+              </div>
+            </div>
+            <div class="list-entry">
+              <input id="formacaoInput" type="text" placeholder="Ex.: Tecnologia em Banco de Dados — Uninter">
+              <button type="button" class="add-button" data-add="formacao" aria-label="Adicionar formação">+</button>
+            </div>
+            <p class="field-help">Clique em + para registrar cada item.</p>
+            <ul class="entry-list" id="formacaoList"></ul>
+          </section>
 
-        <!-- Formação Acadêmica (multi) -->
-        <label>Formação Acadêmica:</label>
-        <div class="multi-input campo-multiplo">
-          <input type="text" id="formacaoInput" placeholder="Inclua o nome do curso, instituição e ano..." />
-          <button class="add-btn" type="button" data-tipo="formacao">+</button>
-        </div>
-        <ul id="formacaoList"></ul>
+          <section class="form-card">
+            <div class="card-heading">
+              <span class="step">04</span>
+              <div>
+                <h3>Experiência profissional</h3>
+                <p>Registre trabalhos, estágios e outras experiências.</p>
+              </div>
+            </div>
+            <div class="list-entry">
+              <input id="experienciaInput" type="text" placeholder="Cargo, empresa e período">
+              <button type="button" class="add-button" data-add="experiencia" aria-label="Adicionar experiência">+</button>
+            </div>
+            <p class="field-help">Clique em + para registrar cada item.</p>
+            <ul class="entry-list" id="experienciaList"></ul>
+          </section>
 
-        <!-- Experiência Profissional (multi) -->
-        <label>Experiência Profissional:</label>
-        <div class="multi-input campo-multiplo">
-          <input type="text" id="experienciaInput" placeholder="Digite suas experiências anteriores" />
-          <button class="add-btn" type="button" data-tipo="experiencia">+</button>
-        </div>
-        <ul id="experienciaList"></ul>
+          <section class="form-card">
+            <div class="card-heading">
+              <span class="step">05</span>
+              <div>
+                <h3>Habilidades</h3>
+                <p>Adicione competências técnicas e pessoais.</p>
+              </div>
+            </div>
 
-        <!-- Hard Skills (multi) -->
-        <label>Hard Skills:</label>
-        <div class="multi-input campo-multiplo">
-          <input type="text" id="habilidadesInput" placeholder="Ex.: Excel, SQL, Power BI" />
-          <button class="add-btn" type="button" data-tipo="habilidades">+</button>
-        </div>
-        <ul id="habilidadesList"></ul>
+            <label for="habilidadeInput">Habilidades técnicas</label>
+            <div class="list-entry">
+              <input id="habilidadeInput" type="text" placeholder="Ex.: SQL, Power BI, Excel">
+              <button type="button" class="add-button" data-add="habilidade" aria-label="Adicionar habilidade técnica">+</button>
+            </div>
+            <ul class="entry-list" id="habilidadeList"></ul>
 
-        <!-- Soft Skills (multi) -->
-        <label>Soft Skills:</label>
-        <div class="multi-input campo-multiplo">
-          <input type="text" id="habilidadesCompInput" placeholder="Ex.: Comunicação, Trabalho em equipe" />
-          <button class="add-btn" type="button" data-tipo="habilidadesComp">+</button>
-        </div>
-        <ul id="habilidadesCompList"></ul>
+            <label for="softSkillInput" class="second-label">Habilidades pessoais</label>
+            <div class="list-entry">
+              <input id="softSkillInput" type="text" placeholder="Ex.: Comunicação, organização">
+              <button type="button" class="add-button" data-add="softSkill" aria-label="Adicionar habilidade pessoal">+</button>
+            </div>
+            <ul class="entry-list" id="softSkillList"></ul>
+          </section>
 
-        <!-- Cursos (multi) -->
-        <label>Cursos:</label>
-        <div class="multi-input campo-multiplo">
-          <input type="text" id="cursosInput" placeholder="Inclua nome do curso, instituição e ano..." />
-          <button class="add-btn" type="button" data-tipo="cursos">+</button>
-        </div>
-        <ul id="cursosList"></ul>
+          <section class="form-card">
+            <div class="card-heading">
+              <span class="step">06</span>
+              <div>
+                <h3>Cursos e certificações</h3>
+                <p>Valorize seus estudos e conhecimentos.</p>
+              </div>
+            </div>
+            <div class="list-entry">
+              <input id="cursoInput" type="text" placeholder="Nome do curso ou certificação">
+              <button type="button" class="add-button" data-add="curso" aria-label="Adicionar curso">+</button>
+            </div>
+            <ul class="entry-list" id="cursoList"></ul>
+          </section>
 
-        <label>LinkedIn:</label>
-        <input type="url" id="linkedin" placeholder="https://linkedin.com/in/seu-perfil" oninput="updatePreview()" />
+          <button type="button" class="primary-button generate-button" id="generateButton">
+            Gerar currículo em PDF <span>→</span>
+          </button>
+          <p class="privacy-note">Revise suas informações antes de gerar o documento.</p>
+        </form>
+
+        <aside class="preview-panel">
+          <div class="preview-heading">
+            <div>
+              <span class="eyebrow">PRÉVIA EM TEMPO REAL</span>
+              <h3>Seu currículo</h3>
+            </div>
+            <span class="preview-status"><span></span> Atualizado</span>
+          </div>
+
+          <div class="resume-preview" id="resumePreview">
+            <div class="preview-header">
+              <div class="preview-photo hidden" id="previewPhotoWrap">
+                <img id="previewPhoto" alt="Foto do currículo">
+              </div>
+              <h2 id="previewNome">Seu nome completo</h2>
+              <p id="previewContato">seuemail@email.com</p>
+              <p id="previewLocalizacao"></p>
+              <p id="previewLinkedin"></p>
+            </div>
+
+            <section class="preview-section hidden" id="previewObjetivoSection">
+              <h3>OBJETIVO PROFISSIONAL</h3>
+              <p id="previewObjetivo"></p>
+            </section>
+            <section class="preview-section">
+              <h3>FORMAÇÃO ACADÊMICA</h3>
+              <ul id="previewFormacao"><li>Sua formação aparecerá aqui.</li></ul>
+            </section>
+            <section class="preview-section">
+              <h3>EXPERIÊNCIA PROFISSIONAL</h3>
+              <ul id="previewExperiencia"><li>Suas experiências aparecerão aqui.</li></ul>
+            </section>
+            <section class="preview-section">
+              <h3>HABILIDADES TÉCNICAS</h3>
+              <ul id="previewHabilidades"><li>Suas habilidades aparecerão aqui.</li></ul>
+            </section>
+            <section class="preview-section">
+              <h3>HABILIDADES PESSOAIS</h3>
+              <ul id="previewSoftSkills"><li>Suas competências pessoais aparecerão aqui.</li></ul>
+            </section>
+            <section class="preview-section">
+              <h3>CURSOS E CERTIFICAÇÕES</h3>
+              <ul id="previewCursos"><li>Seus cursos aparecerão aqui.</li></ul>
+            </section>
+          </div>
+          <p class="preview-footnote">A aparência final pode variar conforme o modelo de PDF escolhido.</p>
+        </aside>
       </div>
+    </section>
+  </main>
 
-    </div>
-  </div>
+  <footer class="footer">
+    <a href="#" class="brand footer-brand">Gere seu <span>Currículo</span></a>
+    <p>Uma nova oportunidade pode começar com uma boa apresentação.</p>
+  </footer>
 
-  <!-- ===== jsPDF + Script ===== -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="script.js"></script>
 </body>
