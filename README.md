@@ -1,7 +1,7 @@
-# 💼 My Landing Page — Gerador de Currículos
+# 💼 Site — Gerador de Currículos
 
-Este projeto é uma **landing page interativa** desenvolvida como parte do trabalho extensionista da Uninter.  
-Ela permite que o usuário  **gere seu próprio currículo em PDF**.
+Este projeto é um site interativo desenvolvido como parte do trabalho extensionista da Uninter.  
+O site  permite que o usuário  **gere seu próprio currículo em PDF**.
 
 ---
 
